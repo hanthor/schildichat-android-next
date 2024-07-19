@@ -1,7 +1,6 @@
 package chat.schildi.theme
 
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
@@ -47,7 +46,6 @@ fun getThemeExposures(darkTheme: Boolean, useScTheme: Boolean) = when {
     else -> elementLightScExposures
 }
 
-@RequiresApi(Build.VERSION_CODES.S)
 @Composable
 fun ScTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -102,15 +100,15 @@ fun ScTheme(
 @Composable
 fun provideDynamicColorScheme(colorScheme: ColorScheme, isLight: Boolean): SemanticColors {
     return SemanticColors(
-        textPrimary = colorScheme.primary,
-        textSecondary = colorScheme.secondary,
+        textPrimary = colorScheme.onPrimary,
+        textSecondary = colorScheme.onSecondary,
         textPlaceholder = colorScheme.onSurface.copy(alpha = 0.4f),
         textDisabled = colorScheme.onSurface.copy(alpha = 0.38f),
-        textActionPrimary = colorScheme.primary,
-        textActionAccent = colorScheme.tertiary,
-        textLinkExternal = colorScheme.secondary,
-        textCriticalPrimary = colorScheme.error,
-        textSuccessPrimary = colorScheme.primary,
+        textActionPrimary = colorScheme.onPrimary,
+        textActionAccent = colorScheme.onTertiary,
+        textLinkExternal = colorScheme.onSecondary,
+        textCriticalPrimary = colorScheme.onError,
+        textSuccessPrimary = colorScheme.onPrimary,
         textInfoPrimary = colorScheme.onBackground,
         textOnSolidPrimary = colorScheme.onPrimary,
         bgSubtlePrimary = colorScheme.surface,
@@ -169,6 +167,26 @@ fun provideDynamicColorScheme(colorScheme: ColorScheme, isLight: Boolean): Seman
         textDecorative4 = colorScheme.onPrimary,
         textDecorative5 = colorScheme.onSecondary,
         textDecorative6 = colorScheme.onTertiary,
+//        messageFromMeBackground = colorScheme.onPrimaryContainer,
+//        messageFromOtherBackground = colorScheme.secondaryContainer,
+//        progressIndicatorTrackColor = colorScheme.onSurfaceVariant,
+//        iconSuccessPrimaryBackground = colorScheme.tertiaryContainer,
+//        bgSubtleTertiary = colorScheme.surfaceVariant,
+//        temporaryColorBgSpecial = colorScheme.background,
+//        pinDigitBg = colorScheme.onPrimaryContainer,
+//        currentUserMentionPillText = colorScheme.onTertiaryContainer,
+//        currentUserMentionPillBackground = colorScheme.tertiary,
+//        mentionPillText = colorScheme.onSecondaryContainer,
+//        mentionPillBackground = colorScheme.secondary,
+//        bigIconDefaultBackgroundColor = colorScheme.onSurface,
+//        bigCheckmarkBorderColor = colorScheme.outline,
+//        highlightedMessageBackgroundColor = colorScheme.primary,
+//        badgePositiveBackgroundColor = colorScheme.primaryContainer,
+//        badgePositiveContentColor = colorScheme.onPrimaryContainer,
+//        badgeNeutralBackgroundColor = colorScheme.surfaceVariant,
+//        badgeNeutralContentColor = colorScheme.onSurfaceVariant,
+//        badgeNegativeBackgroundColor = colorScheme.errorContainer,
+//        badgeNegativeContentColor = colorScheme.onErrorContainer,
         isLight = isLight,
     )
 }

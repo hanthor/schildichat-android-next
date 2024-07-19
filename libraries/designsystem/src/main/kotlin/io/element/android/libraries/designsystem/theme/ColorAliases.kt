@@ -16,20 +16,11 @@
 
 package io.element.android.libraries.designsystem.theme
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import chat.schildi.lib.preferences.ScPrefs
-import chat.schildi.lib.preferences.value
+import chat.schildi.theme.scSemColorOverride
 import io.element.android.compound.annotations.CoreColorToken
 import io.element.android.compound.previews.ColorListPreview
 import io.element.android.compound.theme.ElementTheme
@@ -40,27 +31,11 @@ import io.element.android.libraries.designsystem.preview.ElementPreview
 import io.element.android.libraries.designsystem.preview.PreviewsDayNight
 import kotlinx.collections.immutable.persistentMapOf
 
-object DynamicColorPreferences {
-    val isDynamicColorEnabled: Boolean
-        @Composable
-        get() = ScPrefs.SC_DYNAMICCOLORS.value()
-}
-
-@RequiresApi(Build.VERSION_CODES.S)
-@Composable
-fun getDynamicColorScheme(isDark: Boolean): ColorScheme {
-    val context = LocalContext.current
-    return if (DynamicColorPreferences.isDynamicColorEnabled) {
-        if (isDark) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-    } else {
-        if (isDark) darkColorScheme() else lightColorScheme()
-    }
-}
 /**
  * Room list.
  */
 @Composable
-fun MaterialTheme.roomListRoomName() = colorScheme.primary
+fun MaterialTheme.roomListRoomName() = colorScheme.onPrimaryContainer
 
 @Composable
 fun MaterialTheme.roomListRoomMessage() = colorScheme.secondary
@@ -76,20 +51,15 @@ val SemanticColors.placeholderBackground
 
 val SemanticColors.messageFromMeBackground
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.primaryContainer
-    } else if (isLight) {
+    get() = scSemColorOverride(colorScheme.primaryContainer) ?: if (isLight) {
         Color(0xFFE1E6EC)
     } else {
         Color(0xFF323539)
     }
 
-
 val SemanticColors.messageFromOtherBackground
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.secondaryContainer
-    } else if (isLight) {
+    get() = scSemColorOverride(colorScheme.secondaryContainer) ?: if (isLight) {
         Color(0xFFF0F2F5)
     } else {
         Color(0xFF26282D)
@@ -97,9 +67,7 @@ val SemanticColors.messageFromOtherBackground
 
 val SemanticColors.progressIndicatorTrackColor
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.onSurfaceVariant
-    } else if (isLight) {
+    get() = scSemColorOverride(colorScheme.onSurfaceVariant) ?: if (isLight) {
         Color(0x33052448)
     } else {
         Color(0x25F4F7FA)
@@ -107,9 +75,7 @@ val SemanticColors.progressIndicatorTrackColor
 
 val SemanticColors.iconSuccessPrimaryBackground
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.tertiaryContainer
-    } else if (isLight) {
+    get() = scSemColorOverride(colorScheme.tertiaryContainer) ?: if (isLight) {
         Color(0xffe3f7ed)
     } else {
         Color(0xff002513)
@@ -117,9 +83,7 @@ val SemanticColors.iconSuccessPrimaryBackground
 
 val SemanticColors.bgSubtleTertiary
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.surfaceVariant
-    } else if (isLight) {
+    get() = scSemColorOverride(colorScheme.surfaceVariant) ?: if (isLight) {
         Color(0xfffbfcfd)
     } else {
         Color(0xff14171b)
@@ -127,15 +91,15 @@ val SemanticColors.bgSubtleTertiary
 
 val SemanticColors.temporaryColorBgSpecial
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.background
-    } else if (isLight) Color(0xFFE4E8F0) else Color(0xFF3A4048)
+    get() = scSemColorOverride(colorScheme.background) ?: if (isLight) {
+        Color(0xFFE4E8F0)
+    } else {
+        Color(0xFF3A4048)
+    }
 
 val SemanticColors.pinDigitBg
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.onPrimaryContainer
-    } else if (isLight) {
+    get() = scSemColorOverride(colorScheme.onPrimaryContainer) ?: if (isLight) {
         Color(0xFFF0F2F5)
     } else {
         Color(0xFF26282D)
@@ -143,9 +107,7 @@ val SemanticColors.pinDigitBg
 
 val SemanticColors.currentUserMentionPillText
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.onTertiaryContainer
-    } else if (isLight) {
+    get() = scSemColorOverride(colorScheme.onTertiaryContainer) ?: if (isLight) {
         Color(0xff005c45)
     } else {
         Color(0xff1fc090)
@@ -153,9 +115,7 @@ val SemanticColors.currentUserMentionPillText
 
 val SemanticColors.currentUserMentionPillBackground
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.tertiary
-    } else if (isLight) {
+    get() = scSemColorOverride(colorScheme.tertiary) ?: if (isLight) {
         Color(0x3b07b661)
     } else {
         Color(0xff003d29)
@@ -163,15 +123,11 @@ val SemanticColors.currentUserMentionPillBackground
 
 val SemanticColors.mentionPillText
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.onSecondaryContainer
-    } else textPrimary
+    get() = scSemColorOverride(colorScheme.onSecondaryContainer) ?: textPrimary
 
 val SemanticColors.mentionPillBackground
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.secondary
-    } else if (isLight) {
+    get() = scSemColorOverride(colorScheme.secondary) ?: if (isLight) {
         Color(0x1f052e61)
     } else {
         Color(0x26f4f7fa)
@@ -180,67 +136,86 @@ val SemanticColors.mentionPillBackground
 @OptIn(CoreColorToken::class)
 val SemanticColors.bigIconDefaultBackgroundColor
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.onSurface
-    } else if (isLight) LightColorTokens.colorAlphaGray300 else DarkColorTokens.colorAlphaGray300
+    get() = scSemColorOverride(colorScheme.onSurface) ?: if (isLight) {
+        LightColorTokens.colorAlphaGray300
+    } else {
+        DarkColorTokens.colorAlphaGray300
+    }
 
 @OptIn(CoreColorToken::class)
 val SemanticColors.bigCheckmarkBorderColor
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.outline
-    } else if (isLight) LightColorTokens.colorGray400 else DarkColorTokens.colorGray400
+    get() = scSemColorOverride(colorScheme.outline) ?: if (isLight) {
+        LightColorTokens.colorGray400
+    } else {
+        DarkColorTokens.colorGray400
+    }
 
 @OptIn(CoreColorToken::class)
 val SemanticColors.highlightedMessageBackgroundColor
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.primary
-    } else if (isLight) LightColorTokens.colorGreen300 else DarkColorTokens.colorGreen300
+    get() = scSemColorOverride(colorScheme.primary) ?: if (isLight) {
+        LightColorTokens.colorGreen300
+    } else {
+        DarkColorTokens.colorGreen300
+    }
 
 // Badge colors
 
 @OptIn(CoreColorToken::class)
 val SemanticColors.badgePositiveBackgroundColor
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.primaryContainer
-    } else if (isLight) LightColorTokens.colorAlphaGreen300 else DarkColorTokens.colorAlphaGreen300
+    get() = scSemColorOverride(colorScheme.primaryContainer) ?: if (isLight) {
+        LightColorTokens.colorAlphaGreen300
+    } else {
+        DarkColorTokens.colorAlphaGreen300
+    }
 
 @OptIn(CoreColorToken::class)
 val SemanticColors.badgePositiveContentColor
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.onPrimaryContainer
-    } else if (isLight) LightColorTokens.colorGreen1100 else DarkColorTokens.colorGreen1100
+    get() = scSemColorOverride(colorScheme.onPrimaryContainer) ?: if (isLight) {
+        LightColorTokens.colorGreen1100
+    } else {
+        DarkColorTokens.colorGreen1100
+    }
 
 @OptIn(CoreColorToken::class)
 val SemanticColors.badgeNeutralBackgroundColor
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.surfaceVariant
-    } else if (isLight) LightColorTokens.colorAlphaGray300 else DarkColorTokens.colorAlphaGray300
+    get() = scSemColorOverride(colorScheme.surfaceVariant) ?: if (isLight) {
+        LightColorTokens.colorAlphaGray300
+    } else {
+        DarkColorTokens.colorAlphaGray300
+    }
 
 @OptIn(CoreColorToken::class)
 val SemanticColors.badgeNeutralContentColor
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.onSurfaceVariant
-    } else if (isLight) LightColorTokens.colorGray1100 else DarkColorTokens.colorGray1100
+    get() = scSemColorOverride(colorScheme.onSurfaceVariant) ?: if (isLight) {
+        LightColorTokens.colorGray1100
+    } else {
+        DarkColorTokens.colorGray1100
+    }
 
 @OptIn(CoreColorToken::class)
 val SemanticColors.badgeNegativeBackgroundColor
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.errorContainer
-    } else if (isLight) LightColorTokens.colorAlphaRed300 else DarkColorTokens.colorAlphaRed300
+    get() = scSemColorOverride(colorScheme.errorContainer) ?: if (isLight) {
+        LightColorTokens.colorAlphaRed300
+    } else {
+        DarkColorTokens.colorAlphaRed300
+    }
 
 @OptIn(CoreColorToken::class)
 val SemanticColors.badgeNegativeContentColor
     @Composable
-    get() = if (DynamicColorPreferences.isDynamicColorEnabled) {
-        colorScheme.onErrorContainer
-    } else if (isLight) LightColorTokens.colorRed1100 else DarkColorTokens.colorRed1100
+    get() = scSemColorOverride(colorScheme.onErrorContainer) ?: if (isLight) {
+        LightColorTokens.colorRed1100
+    } else {
+        DarkColorTokens.colorRed1100
+    }
+
 @PreviewsDayNight
 @Composable
 internal fun ColorAliasesPreview() = ElementPreview {
